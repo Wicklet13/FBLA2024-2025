@@ -11,6 +11,87 @@
   <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+      <div class="container-md">
+        
+        <a href="#" class="navbar-brand my-1">
+          Home
+        </a>
+
+        <!-- toggle button for mobile nav-->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#main-nav"
+          aria-controls="main-nav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+
+        <!--navbar links-->
+        <div
+          class="collapse navbar-collapse"
+          id="main-nav"
+        >
+          
+          
+          <ul class="navbar-nav">
+            <li class="nav-item mx-3">
+              <a href="#" class="nav-link h5"> Transactions </a>
+            </li>
+            
+            <li class="nav-item dropdown mx-3">
+              <a
+                class="nav-link dropdown-toggle h5"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Dropdown
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="#">Action1</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    Action2</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    >Action3</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item mx-3">
+              <a href="#" class="nav-link h5"> Analyze</a>
+            </li>
+            
+            <li class="nav-item mx-3">
+              <a href="#" class="nav-link h5"> Link 2 </a>
+            </li>
+
+          </ul>
+
+          <div class="mx-2 my-lg-0 ms-auto">
+            <a href="#" class="btn btn-outline-dark form-inline">Log In</a>
+          </div>
+          
+
+
+        </div>
+      </div>
+    </nav>
+
     {% block body %}{% endblock %}
   </body>
 </html>

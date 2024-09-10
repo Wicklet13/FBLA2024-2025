@@ -1,0 +1,20 @@
+Personal Finance Manager by tracking account
+	balance
+	income
+	expenses
+
+User Inputs
+	income sources
+	expenses
+
+Transaction Data Includes
+	amount
+	category
+	date
+    
+Features
+	View current balance
+	income and expense summary over a period
+	categorize expenses to show spend patterns
+	update/delete existing entries
+	search/filter options
