@@ -10,7 +10,7 @@ def home():
 def account():
     return render_template("account.html")
 
-@app.route('/transactions')
+@app.route('/dashboard')
 def search():
     return render_template("transactions.html")
 
