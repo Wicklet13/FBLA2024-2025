@@ -1,5 +1,152 @@
 {% extends 'base.html'%}
 
 {% block body %}
+<div class="container">
+    <div class="row py-5 justify-content-center">
+        <div class="col-md-auto">
+            <h6>You have <span class="h1">$38,000</span></h4>
+        </div>
+    </div>
+    <div class="row py-3">
+        <div class="col-md-6 text-center" id="income_form">
+            <h3>Income</h3>
+            <hr>
+            <div class="row justify-content-center">
+                <div class="form-group col-md-3 py-1">
+                    <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
+                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="input_field">
+                </div>
+                <div class="form-group col-md-3 py-1">
+                    <label for="inputState" class="fw-bold" >Transaction Type</label>
+                    <select id="inputState" name = "type[]" class="form-select">
+                        <option value="Cash">Cash</option>
+                        <option value="Check">Check</option>
+                        <option selected value="Wire">Wire</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3 py-1">
+                    <label for="amount" class="fw-bold">Amount</label>
+                    <input id="input_field" type="number" name = "amount[]" class="form-control" value=100></input>
+                </div>
 
+                
+                <div class="py-4 ps-1 col-md-3">
+                    <button class="btn btn-success"id="add_income_btn">Add </button>
+                </div>
+            </div> 
+        </div>
+        <div class="col-md-6 text-center" id="expense_form">
+            <h3>Expenses</h3>
+            <hr>
+            <div class="row justify-content-center">
+                <div class="form-group col-md-3 py-1">
+                    <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
+                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="input_field">
+                </div>
+                <div class="form-group col-md-3 py-1">
+                    <label for="inputState" class="fw-bold" >Transaction Type</label>
+                    <select id="inputState" name = "type[]" class="form-select">
+                        <option value="Cash">Cash</option>
+                        <option value="Check">Check</option>
+                        <option selected value="Wire">Wire</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3 py-1">
+                    <label for="amount" class="fw-bold">Amount</label>
+                    <input id="input_field" type="number" name = "amount[]" class="form-control" value=100></input>
+                </div>
+
+                
+                <div class="py-4 ps-1 col-md-3">
+                    <button class="btn btn-danger"id="add_expense_btn">Add </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function(webpage){
+
+        //adding an income line
+        $("#add_income_btn").click(function(addNewIncome){
+
+            addNewIncome.preventDefault();
+
+            $("#income_form").append(
+                `
+                <div class="row justify-content-center">
+                    <div class="form-group col-md-3 py-1">
+                        <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
+                        <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="input_field">
+                    </div>
+                    <div class="form-group col-md-3 py-1">
+                        <label for="inputState" class="fw-bold" >Transaction Type</label>
+                        <select id="inputState" name = "type[]" class="form-select">
+                            <option value="Cash">Cash</option>
+                            <option value="Check">Check</option>
+                            <option selected value="Wire">Wire</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3 py-1">
+                        <label for="amount" class="fw-bold">Amount</label>
+                        <input id="input_field" type="number" name = "amount[]" class="form-control" value=100></input>
+                    </div>
+
+                    
+                    <div class="py-4 ps-1 col-md-3">
+                        <button class="btn btn-outline-success"id="remove_item_btn">Remove</button>
+                    </div>
+                </div> 
+                `
+            )
+
+        })
+
+        //adding an expense line
+        $("#add_expense_btn").click(function(addNewExpense){
+
+            addNewExpense.preventDefault();
+
+            $("#expense_form").append(
+                `
+                <div class="row justify-content-center">
+                    <div class="form-group col-md-3 py-1">
+                        <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
+                        <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="input_field">
+                    </div>
+                    <div class="form-group col-md-3 py-1">
+                        <label for="inputState" class="fw-bold" >Transaction Type</label>
+                        <select id="inputState" name = "type[]" class="form-select">
+                            <option value="Cash">Cash</option>
+                            <option value="Check">Check</option>
+                            <option selected value="Wire">Wire</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3 py-1">
+                        <label for="amount" class="fw-bold">Amount</label>
+                        <input id="input_field" type="number" name = "amount[]" class="form-control" value=100></input>
+                    </div>
+
+                    
+                    <div class="py-4 ps-1 col-md-3">
+                        <button class="btn btn-outline-danger"id="remove_item_btn">Remove</button>
+                    </div>
+                </div>
+                `
+            )
+
+        })
+
+        $(document).on('click',"#remove_item_btn", function(current){
+            current.preventDefault();
+
+            let form_field = $(this).parent().parent();
+            $(form_field).remove()
+        })
+
+    })
+</script>
 {% endblock %} 
