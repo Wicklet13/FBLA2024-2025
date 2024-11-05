@@ -1,5 +1,61 @@
 {% extends 'base.html'%}
 
+{% block head %}
+<script>
+    function searchIncome() {
+        
+
+        let search = document.getElementById("incomeSearch");
+        let filter=search.value.toUpperCase();
+        let inputFields=document.querySelectorAll(".income_input_field");
+
+
+        console.log(inputFields)
+        for (i=0; i<inputFields.length; i++){
+
+            
+            let input=inputFields[i].querySelector("#income_name");
+
+            let txtValue = input.value;
+
+            console.log(txtValue)
+            if (txtValue.toUpperCase().indexOf(filter)==-1){
+                inputFields[i].style.display="none";
+            }else{
+                inputFields[i].style.display="";
+            }
+        }
+
+    }
+
+    function searchExpense() {
+        
+
+        let search = document.getElementById("expenseSearch");
+        let filter=search.value.toUpperCase();
+        let inputFields=document.querySelectorAll(".expense_input_field");
+
+
+        console.log(inputFields)
+        for (i=0; i<inputFields.length; i++){
+
+            
+            let input=inputFields[i].querySelector("#expense_name");
+
+            let txtValue = input.value;
+
+            console.log(txtValue)
+            if (txtValue.toUpperCase().indexOf(filter)==-1){
+                inputFields[i].style.display="none";
+            }else{
+                inputFields[i].style.display="";
+            }
+        }
+
+    }
+</script>
+{% endblock%}
+
 {% block body %}
 <div class="container">
     <div class="row py-5 justify-content-center">
@@ -15,28 +71,15 @@
                 </div>
                 
                 <div class="col-md-3 offset-md-1">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                </div>
-
-                <div class="col-md-2 btn-group">
-                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M3.9 54.9C10.5 40.9 24.5 32 40 32l432 0c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9 320 448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6l0-79.1L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/></svg>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
+                    <input  class="form-control" type="search" aria-label="Search" id="incomeSearch" onkeyup="searchIncome()" placeholder="Search for name">
                 </div>
 
             </div>
             <hr>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center income_input_field">
                 <div class="form-group col-md-3 py-1">
                     <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="input_field">
+                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="income_name">
                 </div>
                 <div class="form-group col-md-2 py-1">
                     <label for="inputState" class="fw-bold" >Type</label>
@@ -60,21 +103,22 @@
                     <button class="btn btn-success"id="add_income_btn"><span>Add</span></button>
                 </div>
             </div> 
+            
         </div>
         <div class="col-md-6 text-center" id="expense_form">
             <div class="row justify-content-start">
                 <div class="col-md-3 offset-md-4">
                     <h3>Expenses</h3>
                 </div>
-                <div class="col-md-3 offset-md-2">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <div class="col-md-3 offset-md-1">
+                    <input  class="form-control" type="search" aria-label="Search" id="expenseSearch" onkeyup="searchExpense()" placeholder="Search for name">
                 </div>
             </div>
             <hr>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center expense_input_field">
                 <div class="form-group col-md-3 py-1">
                     <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="input_field">
+                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="expense_name">
                 </div>
                 
                 <div class="form-group col-md-2 py-1">
@@ -109,6 +153,25 @@
 <script>
     $(document).ready(function(webpage){
 
+        // function searchIncome() {
+        //     var search,filter,inputFields,i,txtValue;
+
+        //     search = document.getElementById("incomeSearch");
+        //     filter=serach.value.toUpperCase();
+        //     inputFields=document.getElementById("income_name");
+
+        //     for (i=0; i<inputFields.length; i++){
+        //         txtValue=inputFields[i].textContent || inputFields[i].innerText;
+
+        //         if (txtValue.toUpperCase().indexOf(filter)>-1){
+        //             inputFields[i].style.display="";
+        //         }else{
+        //             inputFields[i].style.display="none";
+        //         }
+        //     }
+
+        // }
+
         //adding an income line
         $("#add_income_btn").click(function(addNewIncome){
 
@@ -116,10 +179,10 @@
 
             $("#income_form").append(
                 `
-                <div class="row justify-content-center">
+                <div class="row justify-content-center  income_input_field">
                     <div class="form-group col-md-3 py-1">
                         <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                        <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="input_field">
+                        <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="income_name">
                     </div>
                     <div class="form-group col-md-2 py-1">
                         <label for="inputState" class="fw-bold" >Type</label>
@@ -155,10 +218,10 @@
 
             $("#expense_form").append(
                 `
-                <div class="row justify-content-center">
+                <div class="row justify-content-center expense_input_field">
                 <div class="form-group col-md-3 py-1">
                     <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="input_field">
+                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="expense_name">
                 </div>
                 
                 <div class="form-group col-md-2 py-1">
