@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block body %}
 <div class="container">
@@ -10,21 +10,63 @@
     </div>
     <div class="row">
         <div class="col-md-auto">
-            <p class="text-center">This is an finance Calculator app that allows users to see their balance , edit their income and spending details. 
-                Then the program generates income data and graphs that allows users to see their earings</p>
+            <p class="text-center">This is a Finance Calculator app that allows users to see their balance, edit their income and spending details. 
+                Then the program generates income data and graphs that allows users to see their earnings.</p>
         </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-md-auto">
-            <p class="text-center">In order to use our app, users must <br> <a onclick="" class="btn btn-outline-dark form-inline">Log In</a></button></p>
+            <p class="text-center">In order to use our app, users must <br> 
+                <a onclick="googleLogin()" class="btn btn-outline-dark form-inline">Log In</a>
+            </p>
         </div>
     </div>
     <div class="row">
         <div class="col align-self-end">
             <p class="text-end">
-                -made by students Prateek Kalusani, Yaozhou Xiong, and Shreyas Sindhaval
+                - made by students Prateek Kalusani, Yaozhou Xiong, and Shreyas Sindhaval
             </p>
         </div>
     </div>
 </div>
+
+<!-- Load the Google API Library -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com"> <!-- Replace with your Client ID -->
+
+<script>
+    function googleLogin() {
+        // Open the Google Sign-In popup
+        const auth2 = gapi.auth2.getAuthInstance();
+        auth2.signIn().then(function (googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId());
+            console.log('Name: ' + profile.getName());
+            console.log('Email: ' + profile.getEmail());
+
+            // Get the ID token
+            var id_token = googleUser.getAuthResponse().id_token;
+
+            // Send the ID token to your backend for verification
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id_token: id_token })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Redirect to the dashboard or handle login success
+                window.location.href = '/dashboard'; // Redirect to your dashboard or home page
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }).catch(function (error) {
+            console.error('Login failed: ', error);
+        });
+    }
+</script>
 {% endblock %}
