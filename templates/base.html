@@ -9,10 +9,8 @@
       // Import the functions you need from the SDKs you need
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-analytics.js";
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-app.js";
-      import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.2.0/firebase-firestore.js'
+      import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.2.0/firebase-firestore.js';
       import { getAuth, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.2.0/firebase-auth.js';
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
     
       // Your web app's Firebase configuration
       // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -20,7 +18,7 @@
         apiKey: "AIzaSyD0BO5byrBZpIjvmjabAKssmIh4IGDnqk8",
         authDomain: "fbla-financial.firebaseapp.com",
         projectId: "fbla-financial",
-        storageBucket: "fbla-financial.appspot.com",
+        storageBucket: "fbla-financial.firebasestorage.app",
         messagingSenderId: "779124601112",
         appId: "1:779124601112:web:14295ee1caa7e41d8e6e6d",
         measurementId: "G-5FE9XP81R0"
@@ -49,19 +47,17 @@
                       window.location.assign('/dashboard'); // on success route to calculator page
                   },
                   error: function (response) {
-                      console.log(response)
                   }
               });
             }).catch((error) => {
-              console.log(error.customData)
                   const errorCode = error.code;
                   const errorMessage = error.message;
                   const email = error.customData.email;
                   const credential = GoogleAuthProvider.credentialFromError(error);
             });
       }
-          
-          // logout function
+            
+      // logout function
       function logout(){
         $.ajax({
                 url: '/logout', // logout link on server
@@ -70,7 +66,7 @@
                     window.location.assign('/'); // go to home page
                 },
                 error: function (response) {
-                    alert(response)
+                    alert(response);
                 }
             });
       }
@@ -99,7 +95,7 @@
       <div class="container-md">
         
         <a href="/" class="navbar-brand my-1">
-          <img src=" {{url_for('static',filename='logo.png')}} " alt="">
+          <img src="{{url_for('static',filename='logo.png')}}" alt="">
         </a>
 
         <!-- toggle button for mobile nav-->
@@ -114,8 +110,6 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-
-        
 
         <!--navbar links-->
         <div
@@ -133,15 +127,14 @@
               <a href="/analyze" class="nav-link h5"> Analyze </a>
             </li>
           </ul>
-
+          
           <div class="mx-2 my-lg-0 ms-auto">
-            {% if session.user %}
-              <span class="navbar-text">Hello, {{ session["username"] }}!</span>
+            {% if user %}
+              <span class="navbar-text">Hello, {{ user["name"] }}!  </span>
               <button type="button" onclick="logout()" class="btn btn-outline-dark form-inline"><span>Log Out</span></button>
             {% else %}
               <a type="button" onclick="googleLogin()" class="btn btn-outline-dark form-inline"><span>Log In</span></a>
             {% endif %}
-          </div>
         </div>
       </div>
     </nav>

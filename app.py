@@ -22,41 +22,34 @@ def logged_in_required(func):
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("index.html", user=session.get("user"))
 
 @app.route('/login', methods=["POST"])
 def login():
-    print("asdf")
     user = json.loads(request.form.get("creds")) # gets user login info
-    session["user"] = get_user(user["email"]) # stores user in browser session
+    session["user"] = get_user(user["email"], user["displayName"]) # stores user in browser session
     session.permanent = True
     session.modified = True
     return ""
 
-@logged_in_required
 @app.route('/account')
 def account():
-    return render_template("account.html")
+    return render_template("account.html", user=session.get("user"))
 
-@logged_in_required
 @app.route('/dashboard')
 def dashboard():
     return render_template("transactions.html", user=session.get("user"))
 
-@logged_in_required
 @app.route('/analyze')
 def analyze():
-    return render_template("analyze.html")
+    return render_template("analyze.html", user=session.get("user"))
 
 # logout link
-@logged_in_required
 @app.route('/logout', methods=["POST"])
 def logout():
     session.clear() # clear browser session
     session.modified = True
     return ""
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)

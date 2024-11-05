@@ -17,7 +17,7 @@
     <div class="row justify-content-center">
         <div class="col-md-auto">
             <p class="text-center">In order to use our app, users must <br> 
-                <a onclick="googleLogin()" class="btn btn-outline-dark form-inline">Log In</a>
+                <a onclick="" class="btn btn-outline-dark form-inline">Log In</a>
             </p>
         </div>
     </div>
@@ -30,43 +30,5 @@
     </div>
 </div>
 
-<!-- Load the Google API Library -->
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com"> <!-- Replace with your Client ID -->
 
-<script>
-    function googleLogin() {
-        // Open the Google Sign-In popup
-        const auth2 = gapi.auth2.getAuthInstance();
-        auth2.signIn().then(function (googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId());
-            console.log('Name: ' + profile.getName());
-            console.log('Email: ' + profile.getEmail());
-
-            // Get the ID token
-            var id_token = googleUser.getAuthResponse().id_token;
-
-            // Send the ID token to your backend for verification
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id_token: id_token })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // Redirect to the dashboard or handle login success
-                window.location.href = '/dashboard'; // Redirect to your dashboard or home page
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }).catch(function (error) {
-            console.error('Login failed: ', error);
-        });
-    }
-</script>
 {% endblock %}
