@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import firestore, credentials
 
 # Application Default credentials are automatically created.
-creds = credentials.Certificate("firebase_creds.json")
+creds = credentials.Certificate("fbla-financial-firebase-adminsdk-3k9zy-40f46164d8.json")
 app = firebase_admin.initialize_app(creds)
 db = firestore.client()
 
