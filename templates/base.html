@@ -36,24 +36,24 @@
               const credential = GoogleAuthProvider.credentialFromResult(result);
               const token = credential.accessToken;
               const user = result.user;
+              
               // gives server login information
               $.ajax({
                   url: '/login',
                   type: 'POST',
                   data: {
-                      creds: JSON.stringify(user), // data for server
+                      creds: JSON.stringify(user) // data for server
                   },
                   success: function (response) {
-                      window.location.assign('/dashboard'); // on success route to calculator page
+                    window.location.assign('/dashboard'); // on success route to calculator page
                   },
                   error: function (response) {
+                    console.log(response); 
                   }
               });
+              
             }).catch((error) => {
-                  const errorCode = error.code;
-                  const errorMessage = error.message;
-                  const email = error.customData.email;
-                  const credential = GoogleAuthProvider.credentialFromError(error);
+              console.log("er");
             });
       }
             

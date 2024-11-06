@@ -35,7 +35,7 @@ def login():
 @app.route('/account')
 def account():
     return render_template("account.html", user=session.get("user"))
-
+ 
 @app.route('/dashboard')
 def dashboard():
     return render_template("transactions.html", user=session.get("user"))
