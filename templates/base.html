@@ -41,7 +41,7 @@
                   url: '/login',
                   type: 'POST',
                   data: {
-                      creds: JSON.stringify(user) // data for server
+                      creds: JSON.stringify(user), // data for server
                   },
                   success: function (response) {
                       window.location.assign('/dashboard'); // on success route to calculator page
@@ -112,11 +112,17 @@
         </button>
 
         <!--navbar links-->
+        
         <div
           class="collapse navbar-collapse"
           id="main-nav"
         >
+          
+
+          {% if user %}
           <ul class="navbar-nav">
+
+            
             <li class="nav-item mx-3">
               <a href="/dashboard" class="nav-link h5"> Dashboard </a>
             </li>
@@ -127,6 +133,7 @@
               <a href="/analyze" class="nav-link h5"> Analyze </a>
             </li>
           </ul>
+          {% endif %}
           
           <div class="mx-2 my-lg-0 ms-auto">
             {% if user %}
@@ -135,8 +142,8 @@
             {% else %}
               <a type="button" onclick="googleLogin()" class="btn btn-outline-dark form-inline"><span>Log In</span></a>
             {% endif %}
+          </div>
         </div>
-      </div>
     </nav>
 
     {% block body %}{% endblock %}

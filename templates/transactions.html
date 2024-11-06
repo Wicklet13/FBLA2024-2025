@@ -28,6 +28,36 @@
 
     }
 
+    function filterIncome(){
+        let wire = document.getElementById("wireIncome");
+        let cash = document.getElementById("cashIncome");
+        let check = document.getElementById("checkIncome");
+
+        let inputFields=document.querySelectorAll(".income_input_field")
+
+        for (i=0; i<inputFields.length; i++){
+            let type = inputFields[i].querySelector("#incomeType")
+
+            if (wire.checked){
+                inputFields[i].style.display=""
+            }else{
+                inputFields[i].style.display="none"
+            }
+
+            if (cash.checked){
+                inputFields[i].style.display=""
+            }else{
+                inputFields[i].style.display="none"
+            }
+
+            if (check.checked){
+                inputFields[i].style.display=""
+            }else{
+                inputFields[i].style.display="none"
+            }
+        }
+    }
+
     function searchExpense() {
         
 
@@ -60,7 +90,7 @@
 <div class="container">
     <div class="row py-5 justify-content-center">
         <div class="col-md-auto">
-            <h6>You have <span class="h1">$38,000</span></h4>
+            <h6>You have <span class="h1">34,000$</span></h4>
         </div>
     </div>
     <div class="row py-3">
@@ -74,16 +104,41 @@
                     <input  class="form-control" type="search" aria-label="Search" id="incomeSearch" onkeyup="searchIncome()" placeholder="Search for name">
                 </div>
 
+                <div class="dropdown col-md-auto">
+                    <a class="btn btn-light dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                      <img src="{{url_for('static',filename='filter.png')}}" alt="filter" style="width:25px; height: 25px;">
+                    </a>
+                  
+                    <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
+                        <li>
+                        <input type="checkbox" id="wireIncome" value="wire" onmouseup="filterIncome()">
+                        <label for="">Wire</label>
+                        </li>
+
+                        <li>
+                            <input type="checkbox" id="checkIncome" value="check" onmouseup="filterIncome()">
+                            <label for="">Check</label>
+                        </li>
+
+                        <li>
+                            <input type="checkbox" id="cashIncome" value="cash" onmouseup="filterIncome()">
+                            <label for="">Cash</label>
+                        </li>
+                      
+                    </ul>
+                  </div>
+
             </div>
             <hr>
             <div class="row justify-content-center income_input_field">
                 <div class="form-group col-md-3 py-1">
-                    <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
+                    <label for="Transaction_Name" class="fw-bold" >Transaction Name</label> 
                     <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="income_name">
+
                 </div>
                 <div class="form-group col-md-2 py-1">
                     <label for="inputState" class="fw-bold" >Type</label>
-                    <select id="inputState" name = "type[]" class="form-select">
+                    <select id="inputState  incomeType" name = "type[]" class="form-select">
                         <option value="Cash">Cash</option>
                         <option value="Check">Check</option>
                         <option selected value="Wire">Wire</option>
