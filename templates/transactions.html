@@ -6,6 +6,8 @@
         // Get the values from the search input and checkboxes
         let search = document.getElementById("incomeSearch");
         let filter = search.value.toUpperCase();
+        
+
         let wire = document.getElementById("wireIncome");
         let cash = document.getElementById("cashIncome");
         let check = document.getElementById("checkIncome");
@@ -39,8 +41,6 @@
 
 
     function searchExpense() {
-        
-
         // Get the values from the search input and checkboxes
         let search = document.getElementById("expenseSearch");
         let filter = search.value.toUpperCase();
@@ -73,8 +73,10 @@
                 inputFields[i].style.display = "none";  // Hide if not matched
             }
         }
-
     }
+
+
+
 </script>
 {% endblock%}
 
@@ -203,7 +205,7 @@
 
                 <div class="form-group col-md-2 py-1">
                     <label for="amount" class="fw-bold">$Amount</label>
-                    <input id="input_field" type="number" name = "amount[]" class="form-control" value=100></input>
+                    <input id="input_field" type="text" name="amount[]" class="form-control" value="100"></input>
                 </div>
 
                 <div class="form-group col-md-auto py-1">
@@ -224,26 +226,7 @@
 <script>
     $(document).ready(function(webpage){
 
-        // function searchIncome() {
-        //     var search,filter,inputFields,i,txtValue;
-
-        //     search = document.getElementById("incomeSearch");
-        //     filter=serach.value.toUpperCase();
-        //     inputFields=document.getElementById("income_name");
-
-        //     for (i=0; i<inputFields.length; i++){
-        //         txtValue=inputFields[i].textContent || inputFields[i].innerText;
-
-        //         if (txtValue.toUpperCase().indexOf(filter)>-1){
-        //             inputFields[i].style.display="";
-        //         }else{
-        //             inputFields[i].style.display="none";
-        //         }
-        //     }
-
-        // }
-
-        //adding an income line
+        
         $("#add_income_btn").click(function(addNewIncome){
 
             addNewIncome.preventDefault();
