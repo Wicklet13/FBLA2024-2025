@@ -2,20 +2,19 @@ import firebase_admin
 from firebase_admin import firestore, credentials
 
 # Application Default credentials are automatically created.
-creds = credentials.Certificate("fbla-financial-firebase-adminsdk-3k9zy-7113a7effc.json")
+creds = credentials.Certificate("fbla-financial-firebase-adminsdk-3k9zy-52ae8cf401.json")
 app = firebase_admin.initialize_app(creds)
 db = firestore.client()
 
 # get user from database
 def get_user(email, name=None):
     ref = db.collection("users").stream()
-    for u in ref:
-        u = u.to_dict()
-        print(u)
+    for usr in ref:
+        usr = usr.to_dict()
         try:
-            if u["email"] == email:
-                print(u)
-                return u # return user if exists
+            if usr["email"] == email:
+                print(usr)
+                return usr # return user if exists
         except:
             new_user(email, name)
         
