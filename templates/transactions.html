@@ -2,83 +2,75 @@
 
 {% block head %}
 <script>
-    function searchIncome() {
-        
-
+    function filterIncome() {
+        // Get the values from the search input and checkboxes
         let search = document.getElementById("incomeSearch");
-        let filter=search.value.toUpperCase();
-        let inputFields=document.querySelectorAll(".income_input_field");
-
-
-        console.log(inputFields)
-        for (i=0; i<inputFields.length; i++){
-
-            
-            let input=inputFields[i].querySelector("#income_name");
-
-            let txtValue = input.value;
-
-            console.log(txtValue)
-            if (txtValue.toUpperCase().indexOf(filter)==-1){
-                inputFields[i].style.display="none";
-            }else{
-                inputFields[i].style.display="";
-            }
-        }
-
-    }
-
-    function filterIncome(){
+        let filter = search.value.toUpperCase();
         let wire = document.getElementById("wireIncome");
         let cash = document.getElementById("cashIncome");
         let check = document.getElementById("checkIncome");
 
-        let inputFields=document.querySelectorAll(".income_input_field")
+        // Get all the income input fields
+        let inputFields = document.querySelectorAll(".income_input_field");
 
-        for (i=0; i<inputFields.length; i++){
-            let type = inputFields[i].querySelector("#incomeType")
+        // Loop through each input field
+        for (let i = 0; i < inputFields.length; i++) {
+            let input = inputFields[i].querySelector("#income_name");
+            let type = inputFields[i].querySelector("select[name='type[]']");
 
-            if (wire.checked){
-                inputFields[i].style.display=""
-            }else{
-                inputFields[i].style.display="none"
+            // Get the transaction name and type
+            let txtValue = input.value.toUpperCase();
+            let typeValue = type ? type.value.toUpperCase() : "";
+
+            // Check if both the search term and filter condition are met
+            if (
+                (txtValue.indexOf(filter) !== -1) &&  // Name search
+                ((wire.checked && typeValue === "WIRE") || 
+                (cash.checked && typeValue === "CASH") || 
+                (check.checked && typeValue === "CHECK") ||
+                (!wire.checked && !cash.checked && !check.checked))  // Type filter
+            ) {
+                inputFields[i].style.display = "";  // Show if matched
+            } else {
+                inputFields[i].style.display = "none";  // Hide if not matched
             }
-
-            if (cash.checked){
-                inputFields[i].style.display=""
-            }else{
-                inputFields[i].style.display="none"
-            }
-
-            if (check.checked){
-                inputFields[i].style.display=""
-            }else{
-                inputFields[i].style.display="none"
-            }
-        }
+        }   
     }
+
 
     function searchExpense() {
         
 
+        // Get the values from the search input and checkboxes
         let search = document.getElementById("expenseSearch");
-        let filter=search.value.toUpperCase();
-        let inputFields=document.querySelectorAll(".expense_input_field");
+        let filter = search.value.toUpperCase();
+        let wire = document.getElementById("wireExpense");
+        let cash = document.getElementById("cashExpense");
+        let check = document.getElementById("checkExpense");
 
+        // Get all the income input fields
+        let inputFields = document.querySelectorAll(".expense_input_field");
 
-        console.log(inputFields)
-        for (i=0; i<inputFields.length; i++){
+        // Loop through each input field
+        for (let i = 0; i < inputFields.length; i++) {
+            let input = inputFields[i].querySelector("#expense_name");
+            let type = inputFields[i].querySelector("select[name='type[]']");
 
-            
-            let input=inputFields[i].querySelector("#expense_name");
+            // Get the transaction name and type
+            let txtValue = input.value.toUpperCase();
+            let typeValue = type ? type.value.toUpperCase() : "";
 
-            let txtValue = input.value;
-
-            console.log(txtValue)
-            if (txtValue.toUpperCase().indexOf(filter)==-1){
-                inputFields[i].style.display="none";
-            }else{
-                inputFields[i].style.display="";
+            // Check if both the search term and filter condition are met
+            if (
+                (txtValue.indexOf(filter) !== -1) &&  // Name search
+                ((wire.checked && typeValue === "WIRE") || 
+                (cash.checked && typeValue === "CASH") || 
+                (check.checked && typeValue === "CHECK") ||
+                (!wire.checked && !cash.checked && !check.checked))  // Type filter
+            ) {
+                inputFields[i].style.display = "";  // Show if matched
+            } else {
+                inputFields[i].style.display = "none";  // Hide if not matched
             }
         }
 
@@ -101,7 +93,7 @@
                 </div>
                 
                 <div class="col-md-3 offset-md-1">
-                    <input  class="form-control" type="search" aria-label="Search" id="incomeSearch" onkeyup="searchIncome()" placeholder="Search for name">
+                    <input  class="form-control" type="search" aria-label="Search" id="incomeSearch" onkeyup="filterIncome()" placeholder="Search for name">
                 </div>
 
                 <div class="dropdown col-md-auto">
@@ -111,22 +103,22 @@
                   
                     <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
                         <li>
-                        <input type="checkbox" id="wireIncome" value="wire" onmouseup="filterIncome()">
+                        <input type="checkbox" id="wireIncome" value="wire" onchange="filterIncome()">
                         <label for="">Wire</label>
                         </li>
 
                         <li>
-                            <input type="checkbox" id="checkIncome" value="check" onmouseup="filterIncome()">
+                            <input type="checkbox" id="checkIncome" value="check" onchange="filterIncome()">
                             <label for="">Check</label>
                         </li>
 
                         <li>
-                            <input type="checkbox" id="cashIncome" value="cash" onmouseup="filterIncome()">
+                            <input type="checkbox" id="cashIncome" value="cash" onchange="filterIncome()">
                             <label for="">Cash</label>
                         </li>
                       
                     </ul>
-                  </div>
+                </div>
 
             </div>
             <hr>
@@ -138,7 +130,7 @@
                 </div>
                 <div class="form-group col-md-2 py-1">
                     <label for="inputState" class="fw-bold" >Type</label>
-                    <select id="inputState  incomeType" name = "type[]" class="form-select">
+                    <select id="inputState" name = "type[]" class="form-select incomeType">
                         <option value="Cash">Cash</option>
                         <option value="Check">Check</option>
                         <option selected value="Wire">Wire</option>
@@ -162,11 +154,35 @@
         </div>
         <div class="col-md-6 text-center" id="expense_form">
             <div class="row justify-content-start">
-                <div class="col-md-3 offset-md-4">
+                <div class="col-md-3 offset-md-3">
                     <h3>Expenses</h3>
                 </div>
                 <div class="col-md-3 offset-md-1">
                     <input  class="form-control" type="search" aria-label="Search" id="expenseSearch" onkeyup="searchExpense()" placeholder="Search for name">
+                </div>
+
+                <div class="dropdown col-md-auto">
+                    <a class="btn btn-light dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                      <img src="{{url_for('static',filename='filter.png')}}" alt="filter" style="width:25px; height: 25px;">
+                    </a>
+                  
+                    <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
+                        <li>
+                        <input type="checkbox" id="wireExpense" value="wire" onchange="searchExpense()">
+                        <label for="">Wire</label>
+                        </li>
+
+                        <li>
+                            <input type="checkbox" id="checkExpense" value="check" onchange="searchExpense()">
+                            <label for="">Check</label>
+                        </li>
+
+                        <li>
+                            <input type="checkbox" id="cashExpense" value="cash" onchange="searchExpense()">
+                            <label for="">Cash</label>
+                        </li>
+                      
+                    </ul>
                 </div>
             </div>
             <hr>
@@ -178,7 +194,7 @@
                 
                 <div class="form-group col-md-2 py-1">
                     <label for="inputState" class="fw-bold" >Type</label>
-                    <select id="inputState" name = "type[]" class="form-select">
+                    <select id="inputState" name = "type[]" class="form-select expenseType">
                         <option value="Cash">Cash</option>
                         <option value="Check">Check</option>
                         <option selected value="Wire">Wire</option>
@@ -241,7 +257,7 @@
                     </div>
                     <div class="form-group col-md-2 py-1">
                         <label for="inputState" class="fw-bold" >Type</label>
-                        <select id="inputState" name = "type[]" class="form-select">
+                        <select id="inputState" name = "type[]" class="form-select incomeType">
                             <option value="Cash">Cash</option>
                             <option value="Check">Check</option>
                             <option selected value="Wire">Wire</option>
@@ -281,7 +297,7 @@
                 
                 <div class="form-group col-md-2 py-1">
                     <label for="inputState" class="fw-bold" >Type</label>
-                    <select id="inputState" name = "type[]" class="form-select">
+                    <select id="inputState" name = "type[]" class="form-select expenseType">
                         <option value="Cash">Cash</option>
                         <option value="Check">Check</option>
                         <option selected value="Wire">Wire</option>
