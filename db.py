@@ -17,8 +17,7 @@ def get_user(email, name=None):
                 return usr # return user if exists
         except:
             new_user(email, name)
-        
-# new user in database
+
 def new_user(email, name):
     ref = db.collection("users").document(email)
     data = {
@@ -26,9 +25,8 @@ def new_user(email, name):
         "name": name,
         "income": [],
         "expenses": [],
-        "balance": 0.00
+        "balance": None
         }
-    print(data)
     try: # try to update data
         ref.update(data)
     except:
