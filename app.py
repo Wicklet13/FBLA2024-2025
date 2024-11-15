@@ -33,10 +33,6 @@ def login():
     session.modified = True
     return ""
 
-@app.route('/account')
-@logged_in_required
-def account():
-    return render_template("account.html", user=session.get("user"))
  
 @app.route('/dashboard')
 @logged_in_required
