@@ -1,9 +1,10 @@
 import firebase_admin
 from firebase_admin import firestore, credentials
 import datetime
+import os
 
 # Application Default credentials are automatically created.
-creds = credentials.Certificate("key.json")
+creds = credentials.Certificate(os.environ['API_KEY'])
 app = firebase_admin.initialize_app(creds)
 db = firestore.client()
 

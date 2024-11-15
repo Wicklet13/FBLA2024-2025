@@ -14,12 +14,12 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-     - name: Test env vars for python
-      run: python -c 'import os;print(os.environ)'
+     - name: Python Env Vars
       env:
-        ENV_SECRET: ${{ secrets.ENV_SECRET }} 
-        REPO_SECRET: ${{ secrets.REPO_SECRET }} 
+        API_KEY: ${{ secrets.API_KEY }} 
+      run: |
+        nbdev_test_nbs
+      
