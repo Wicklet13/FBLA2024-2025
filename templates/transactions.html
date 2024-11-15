@@ -85,14 +85,14 @@
             }, // data for server
             success: function (response) {
                 
-                window.location.href = '/dashboard'; // reload page if succesful
+                updateExpenses(); // reload page if succesful
             },
             error: function (response) {
             
                 }
         });
 
-        updateExpenses();
+        
     }
 
     function updateExpenses(){
