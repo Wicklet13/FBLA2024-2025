@@ -106,7 +106,7 @@
                 "expense_date": $("div input[name='expense_date[]']").map( function() { return $(this).val(); } ).get()
             }, // data for server
             success: function (response) {
-                window.location.href = '/dashboard'; // reload page if succesful
+                window.location.href = '/analyze'; // reload page if succesful
             },
             error: function (response) {
                 // alert("Oops something went wrong check for blank input fields or values 0 and 100...") FIX THIS LATER IT RUNS WHEN PAGE RELOADS FOR NO REASON
