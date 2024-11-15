@@ -1,17 +1,13 @@
 import firebase_admin
 from firebase_admin import firestore, credentials
 import datetime
-import os
-
-
-
 
 # Application Default credentials are automatically created.
 creds = credentials.Certificate({
   "type": "service_account",
   "project_id": "fbla-financial",
-  "private_key_id": "88d55cec5f984262028729875f070297f58bce1c",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCooMtM6UKf07CM\nUVIlDz3mRtQHnZVUJr4Pct9wWhujqHxL+GsXmwx5/YuWIXvl0QM6myqbFgdmnCt/\nsmOu0EPm86MLJbo4wZooA3iVZz+AraRkHDGal+yLcSlt0CF+PK8/RmHsX9jcMRoB\nXBwEpuKSLqWjiiZhc22Y5EmiyLfod/e62/C5kdXKHIzX/N14IiVDPHeptlwEBuYr\nHIos7fn0qeYQA997BBG32VEXARHxUVyg3ggS5/w5pgpejy232chRKEgpXL1pKlZ7\nmz6z8d6XQmQWOblKdYatiE3uXBlDPGPYAHbNFBI9wc45sAqmQB/5va0n6twZMZQ1\n0J5WxvElAgMBAAECggEAFyyF0+uIjutqK1Zvqg0mrhNUxzkmUPrECt54C3ouqzaX\n4l7g5M0XkVpBSSAP5VzsiyzQ1aBY4waaScHLxjXz5vTblsgYB/2/QDl95FZcmUQD\nwAhJ3tt7FAy4q1E7kRwo31K+WVwwss4Cq2YrqY3/vCQx+kAdly3kRWs2HWtlLsq4\nvQM2fD9ksE4DswslCDnCailiSJjdpd3t80NV7eGnGkt0qOkrLTltlXrLXaYmdJpO\nDApSBX1EQ+E5xRRCWXItgLlkEL8s0104w/t64+OuI4iKPguEBMK1x1W+0KeLnPoD\n4a18Gw+NVeWOC9rciNDADSH47itLgH0yt4EysN797wKBgQDVvOlcjaoaCTv0pM54\nhLV6D7KBaQgRXEaeEqNdsU+yiajTKH0wvKgxPj195S82ZK1sGRrFPtfgFiENxYfG\nGy6XrdpZzxHMHG3+/wF2CSsvRZrPHp9ig9CutaEhVb/urWLqKwerdjs6nDAxA4J2\ny11itkkNrPOQfkJ4xBEO2LpIiwKBgQDJ+H3XgkZUe9RxdNvvNV+3uWvZLO+o37rU\nVW878Hd3cRIvs51cxaWK+oAaEj2GQZgGk9UcCP6JZWgIXu37SFkwPiWPlV1xyfha\n65MtzZfpmJwehbcS4KjWCMWdkeClay57JfKljGEGNIYIcYP9SdvZrTEdR9MxLVcE\n6aDp+lszDwKBgQCwBHId0WB7Lo2cjDio0YluKw0zO570RQy20tyMpR/gBTPuKVLn\n1wWgAAS98Aawgbq74fTE6Vr4ZOD1qW2F/Q6ixP6jpT6f2+3N6I14elaBCI5T8YEK\nrUknB9bZT/fPBCUIeUVItAZU3xlk0+IWGKYgS8PfqkWvAfuV3sm5c0v9vwKBgEZv\n6zNls7FzHjwTTUC3lJI2kG5FRa/XlwjGYuy8iG2XeYg5VAAuzfUSN+rfwaU46xQg\nKoqEeIDiZM3Gjai9Kp2wjtjsdpJgpcTPs5ydvwUwvAHJEHf88eTzWjgB0B7gqm04\nZs9ljdDkMHpxXF7Ri2L3C9HyYq0b6uVDtWLkdTnxAoGARUousIUcRf7bqDhdC+TQ\nUT92jEMIT86n+Qp6hY4JzhrnJyLbgJtgkQ/tGmaAaZlmkROo4q8XrhHJe1srNncC\nDfFJsXC9kzmmbRHzHWUuVIBYVZZf646mbIrPcED7Kw4WoS0M1zIZfuaQsQ2Z/mM9\nRBFndfU/u82/djtm5DmIiA4=\n-----END PRIVATE KEY-----\n",
+  "private_key_id": "31bd71c50e69120bab1eec054b8fc15cf12d3a4f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCrn5QSokzzwaEt\nO5jfGMXfNaOCTH70Px7E9U6VvPHn+yVajscxPG65AmmFG4QWdXDAOMXXXjwBZwXb\nuB5/kUdk4dz1anQLBEwWPN+YAFqESBwTm+Tig3iuoJ/Y9lI3Jj86m0A6pRm4tvBg\nDbNbKgJG2CCNjSqCNllQnScYd+UKJG0kjf21qfK6Uj7Hi6+CVy96nO4pXWI7SWf0\nlF2KE7Mpd7aoABXuTulqQEF+K+fcJWwzjXn8at2CXdOj7dU7i95kuQX98Ki8Y9rx\nt7ozYhHGtJBqTvbr/p6vp6QlV4VJqqBqK1VLAgmaFWUeRc+yZj255E599NoSI9pg\nd2FkvVbrAgMBAAECggEAEMEtdXw+wvU+ROoyjGUgvB/CbLAHHNUkrdm86EVf4GPW\nS7bwn0/lB07C+mmrRX4Fmd5xAguDFCf4nHCnGZEXRTP/nD3eQk0TGICs22v9ajiX\n9RodCDgJihLISCgT8qpbNd9+L7t6fVvur5Hm1pmNS1lCJE+JvNiNc59D99GMnKa0\nxe7yrXU6WG0e4bzISbCmKPBZLi+lkvbfDH11s5nisQQDfT6blxwp1DiOxERgwsQu\nWxEmq7AtLTBRyvc7yXaB4ecZq5ekHS12uNN3ji89lOxok5YxO3e/3OsMw326+A39\neOG2Cez+m2Rp3zqYW/3aRqfjXIiMCAWiyk1y6+LNYQKBgQDYyg22sSDZ/LxF3fA8\n49pnR5hV/7zZN2dTjSI2+sHavcLUINCs+8SotPkcq7v2++6OisTyc+lfZee9A9K2\nF2C8rrMhgsYNiudBAYmYxM9CsR8eFvPGgvaPbM7NbFnIrXjRPH0+3HPpt5UTZl8e\nN94ckue9fQOk/quPvP3Qhll0swKBgQDKqjeXG0Qz9oFGBbWdad+ecVZLjqpjTIcr\nt4fUaWeFPRqTkrR1SFYy7a4YtIrJxyD5YMfR18bW9t6kTFvU7iPLqvCz9U/o3WW3\n2yBFYImJDk1Itnn3STjm0mAYAFqMH6MkxTM2YFlyYAUHtaRJ+5qGSJcsjjClAh4m\noTl/NbVg6QKBgBYvn3Wp7PXCIrZ3vyVMIEbfkdyDPp1wSRfI4s6DnSE4uF6jORfq\n8DZfxvrDLIpbQA/AbeVuLV0A/dVfNcpC3DiTHGv6iTBLnd0OPjmvMpLds5SNvsb7\nEiadeRCW3R1ne2zWZu7u+sHZct04ZdWe3BFKi4Ld72iMU5xzN/qGNVN3AoGATofk\n4J3FMOl9MFf4BxZGe4vpZ3/R0IaP/kWw0YNChOOnj7WSTbwJAtUM2C/lc8jAo0F4\nTHzzZMrmfP3Fu93Hax1DBkixfUeFKdg0Sg3dXYl4MwvaeRMbhH3SlJpWe+OqgQ4V\nCSYOov5IFLOzBKQFPbGVOsOiX95RNqDUudFjBjkCgYA9aVVlcMSsyB9xn561juVc\nRiIPJj7JuUPFbJvKp/WQ7meiy+k6mPSaBR4Slq36LAzL0hCx56aI0gmzInWqjJdF\nYzWYUw/xLVKs3X/MavEFOS5UCr5fUxGiDXSKXiSL7G0PgaFyhJa2vilYF3vZmoT0\naUBMF8bu9UqAPqTNGpYV4A==\n-----END PRIVATE KEY-----\n",
   "client_email": "firebase-adminsdk-4x4hb@fbla-financial.iam.gserviceaccount.com",
   "client_id": "102456473024789919144",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
@@ -19,8 +15,7 @@ creds = credentials.Certificate({
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-4x4hb%40fbla-financial.iam.gserviceaccount.com",
   "universe_domain": "googleapis.com"
-}
-)
+})
 app = firebase_admin.initialize_app(creds)
 db = firestore.client()
 
@@ -36,7 +31,7 @@ def get_user(email, name=None):
                 return usr # return user if exists
         except Exception as e:
             pass      
-    new_user(email, name)
+    return new_user(email, name)
 
 def new_user(email, name):
     ref = db.collection("users").document(email)
@@ -47,37 +42,46 @@ def new_user(email, name):
         "incomes": [],
         "expenses": [],
         "balance": 0,
-        "months": [0 for i in range(12)]
+        "months": [0 for i in range(12)],
+        "income_types": {"Cash": 0, "Check": 0, "Wire": 0},
+        "expense_types": {"Cash": 0, "Check": 0, "Wire": 0}
         }
-    
+
     ref.set(data)
+    return data
 
 def update_incomes(email, incomes):
     #name, type, amt, date
     ref = db.collection("users").document(email)
     data = {}
+    types = {"Cash": 0, "Check": 0, "Wire": 0}
+    print(types)
     for income in incomes:
         data[incomes[income][0]] = {
             'type': incomes[income][1],
             'amt': incomes[income][2],
             'date': incomes[income][3]
             }
+        types[incomes[income][1]] += 1
+
     
-    ref.update({"incomes": data})
+    ref.update({"incomes": data, "income_types": types})
     
 
 def update_expenses(email, expenses):
     #name, type, amt, date
     ref = db.collection("users").document(email)
     data = {}
+    types = {"Cash": 0, "Check": 0, "Wire": 0}
     for expense in expenses:
         data[expenses[expense][0]]=  {
             'type': expenses[expense][1],
             'amt': expenses[expense][2],
             'date': expenses[expense][3]
             }
+        types[expenses[expense][1]] += 1
             
-    ref.update({"expenses": data})
+    ref.update({"expenses": data, "expense_types": types})
     
 
 def update_balance(email):

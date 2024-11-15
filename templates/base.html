@@ -123,6 +123,7 @@
           
           <ul class="navbar-nav">
 
+            <!-- if the user is logged in show the user only pages-->
             {% if user %}
             <li class="nav-item mx-3">
               <a href="/dashboard" class="nav-link h5"> Dashboard </a>
@@ -137,8 +138,9 @@
           
           
           <div class="mx-2 my-lg-0 ms-auto">
+            <!-- if the user is logged in display show the log out-->
             {% if user %}
-              <span class="navbar-text">Hello, {{ user["name"] }}!  </span>
+              <span class="navbar-text px-3">Hello, {{ user["name"] }}!  </span>
               <button type="button" onclick="logout()" class="btn btn-outline-dark form-inline"><span>Log Out</span></button>
             {% else %}
               <a type="button" onclick="googleLogin()" class="btn btn-outline-dark form-inline"><span>Log In</span></a>

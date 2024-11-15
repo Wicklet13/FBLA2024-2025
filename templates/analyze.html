@@ -9,8 +9,25 @@
 {% block body %}
 
 <div class="container-xxl ">
+    <div class="row py-5 justify-content-center">
+        
+        <div class="text-center col-md-auto" style="width: 550px;">
+            <h2 class="text-center">Balance of <em class="fw-bold">${{user["balance"]}}</em></h2>
+            <canvas id="lineChart"></canvas>
+        </div>
+    </div>
+
     <div class="row py-3">
-        <div class="text-center offset-md-6 col-md-auto" style="width: 550px;"><canvas id="lineChart"></canvas></div>
+        <div class="offset-md-2 col-md-auto" style="width: 300px;">
+            <h3 class="text-center">Income Type </h3>
+            <hr>
+            <canvas id="incomePieChart"></canvas>
+        </div>
+        <div class="text-center offset-md-2 col-md-auto" style="width: 300px;">
+            <h3 class="text-center">Expense Type </h3>
+            <hr>
+            <canvas id="expensePieChart"></canvas>
+        </div>
     </div>
     
 </div>
@@ -61,7 +78,7 @@
                     beginAtZero: true,
                     title: {
                     display: true,
-                    text: 'Balance In Thousands of Dollars'
+                    text: 'Balance In Dollars'
                     }
                 }
             
@@ -74,6 +91,86 @@
     //end line chart
 
 
+    //income type pie chart
+
+    var incomePieElement =  document.getElementById('incomePieChart');
+
+    const incomePieLabels = [
+        'Wire', 'Cash', 'Check'
+    ];
+    
+    const incomePieData = {
+        labels : incomePieLabels,
+        datasets : [{
+            label: 'Amount',
+            data: [ {{ user['income_types']['Wire']}} , {{ user['income_types']['Cash']}} , {{ user['income_types']['Check']}} ],
+            backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+            ],
+            hoverOffset : 4
+        }]
+            
+    };
+      
+
+    const incomePieGraph = new Chart(
+        incomePieElement,
+      {
+        type: 'pie',
+        
+        data: incomePieData,
+        
+        
+    }
+    );
+
+    //end of income pie chart
+
+
+
+
+
+
+    //expense pie chart
+
+
+    var expensePieElement =  document.getElementById('expensePieChart');
+
+    const expensePieLabels = [
+        'Wire', 'Cash', 'Check'
+    ];
+    
+    const expensePieData = {
+        labels : expensePieLabels,
+        datasets : [{
+            label: 'Amount',
+            data: [ {{ user['expense_types']['Wire']}} , {{ user['expense_types']['Cash']}} , {{ user['expense_types']['Check']}} ],
+            backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 4
+        }]
+            
+    };
+      
+
+    const expensePieGraph = new Chart(
+        expensePieElement,
+      {
+        type: 'pie',
+        
+        data: expensePieData,
+        
+        
+    }
+    );
+
+
+    //end of expense pie chart
     
   })();
 </script>
