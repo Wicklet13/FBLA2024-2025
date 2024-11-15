@@ -16,9 +16,12 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-md-auto">
-            <p class="text-center">In order to use our app, users must <br> 
-                <a onclick="googleLogin()" class="btn btn-outline-dark form-inline">Log In</a>
-            </p>
+            {% if user %}
+            {% else %}
+                <p class="text-center">In order to use our app, users must <br> 
+                    <a onclick="googleLogin()" class="btn btn-outline-dark form-inline">Log In</a>
+                </p>
+            {% endif %}
         </div>
     </div>
     <div class="row">

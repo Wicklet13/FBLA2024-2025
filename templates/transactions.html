@@ -16,7 +16,7 @@
         // Loop through each input field
         for (let i = 0; i < inputFields.length; i++) {
             let input = inputFields[i].querySelector("#income_name");
-            let type = inputFields[i].querySelector("select[name='type[]']");
+            let type = inputFields[i].querySelector("select[name='income_type[]']");
 
             // Get the transaction name and type
             let txtValue = input.value.toUpperCase();
@@ -38,7 +38,7 @@
     }
 
 
-    function searchExpense() {
+    function filterExpense() {
         // Get the values from the search input and checkboxes
         let search = document.getElementById("expenseSearch");
         let filter = search.value.toUpperCase();
@@ -52,7 +52,7 @@
         // Loop through each input field
         for (let i = 0; i < inputFields.length; i++) {
             let input = inputFields[i].querySelector("#expense_name");
-            let type = inputFields[i].querySelector("select[name='type[]']");
+            let type = inputFields[i].querySelector("select[name='expense_type[]']");
 
             // Get the transaction name and type
             let txtValue = input.value.toUpperCase();
@@ -73,9 +73,49 @@
         }
     }
 
+    function updateIncomes(){
+        $.ajax({
+            url: '/update_income_transactions', // server url
+            type: "POST",
+            data: {
+                "income_names": $("div input[name='income_name[]']").map( function() { return $(this).val(); } ).get(),
+                "income_types": $("div select[name='income_type[]']").map( function() { return $(this).val(); } ).get(),
+                "income_amounts": $("div input[name='income_amount[]']").map( function() { return $(this).val(); } ).get(),
+                "income_date": $("div input[name='income_date[]']").map( function() { return $(this).val(); } ).get()
+            }, // data for server
+            success: function (response) {
+                
+                window.location.href = '/dashboard'; // reload page if succesful
+            },
+            error: function (response) {
+            
+                }
+        });
 
+        updateExpenses();
+    }
+
+    function updateExpenses(){
+        $.ajax({
+            url: '/update_expense_transactions', // server url
+            type: "POST",
+            data: {
+                "expense_names": $("div input[name='expense_name[]']").map( function() { return $(this).val(); } ).get(),
+                "expense_types": $("div select[name='expense_type[]']").map( function() { return $(this).val(); } ).get(),
+                "expense_amounts": $("div input[name='expense_amount[]']").map( function() { return $(this).val(); } ).get(),
+                "expense_date": $("div input[name='expense_date[]']").map( function() { return $(this).val(); } ).get()
+            }, // data for server
+            success: function (response) {
+                window.location.href = '/dashboard'; // reload page if succesful
+            },
+            error: function (response) {
+                // alert("Oops something went wrong check for blank input fields or values 0 and 100...") FIX THIS LATER IT RUNS WHEN PAGE RELOADS FOR NO REASON
+            }
+        });
+    }
 
 </script>
+
 {% endblock%}
 
 {% block body %}
@@ -95,6 +135,7 @@
                 <div class="col-md-3 offset-md-1">
                     <input  class="form-control" type="search" aria-label="Search" id="incomeSearch" onkeyup="filterIncome()" placeholder="Search for name">
                 </div>
+
 
                 <div class="dropdown col-md-auto">
                     <a class="btn btn-light dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -122,15 +163,18 @@
 
             </div>
             <hr>
+
+            {% if user["incomes"]|length == 0 %}
             <div class="row justify-content-center income_input_field">
+                
                 <div class="form-group col-md-3 py-1">
                     <label for="Transaction_Name" class="fw-bold" >Transaction Name</label> 
-                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="income_name">
+                    <input name = "income_name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="income_name">
 
                 </div>
                 <div class="form-group col-md-2 py-1">
                     <label for="inputState" class="fw-bold" >Type</label>
-                    <select id="inputState" name = "type[]" class="form-select incomeType">
+                    <select id="inputState" name = "income_type[]" class="form-select incomeType">
                         <option value="Cash">Cash</option>
                         <option value="Check">Check</option>
                         <option selected value="Wire">Wire</option>
@@ -138,18 +182,67 @@
                 </div>
                 <div class="form-group col-md-2 py-1">
                     <label for="amount" class="fw-bold">$Amount</label>
-                    <input id="input_field" type="number" name = "amount[]" class="form-control" value=100></input>
+                    <input id="input_field" type="number" name = "income_amount[]" class="form-control" value=100></input>
                 </div>
 
                 <div class="form-group col-md-auto py-1">
                     <label for="amount" class="fw-bold">Date</label>
-                    <input id="input_field" type="date" name = "date[]" class="form-control" value=100></input>
+                    <input id="input_field" type="date" name = "income_date[]" class="form-control" value=""></input>
                 </div>
                 
                 <div class="py-4 ps-1 col-md-1">
                     <button class="btn btn-success"id="add_income_btn"><span>Add</span></button>
                 </div>
-            </div> 
+            </div>
+            {% endif %}
+
+            {% for income in user['incomes'] %}
+            <div class="row justify-content-center  income_input_field">
+                <div class="form-group col-md-3 py-1">
+                    <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
+                    <input name = "income_name[]" class="form-control" value="{{income}}" placeholder="paycheck , cash" id="income_name">
+                </div>
+                <div class="form-group col-md-2 py-1">
+                    <label for="inputState" class="fw-bold" >Type</label>
+                    <select id="inputState" name = "income_type[]" class="form-select incomeType" value="{{user['incomes'][income]['type']}}">
+                        {% if user['incomes'][income]['type'] == "Cash" %}
+                        <option value="Cash" selected>Cash</option>
+                        <option value="Check">Check</option>
+                        <option value="Wire">Wire</option>
+                        {% elif user['incomes'][income]['type'] == "Check"%}
+                        <option value="Cash">Cash</option>
+                        <option value="Check" selected>Check</option>
+                        <option value="Wire">Wire</option>
+                        {% else %}
+                        <option value="Cash">Cash</option>
+                        <option value="Check">Check</option>
+                        <option value="Wire" selected>Wire</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="form-group col-md-2 py-1">
+                    <label for="amount" class="fw-bold">$Amount</label>
+                    <input id="input_field" type="number" name = "income_amount[]" class="form-control" value="{{user['incomes'][income]['amt']}}"></input>
+                </div>
+
+                <div class="form-group col-md-auto py-1">
+                    <label for="amount" class="fw-bold">Date</label>
+                    <input id="input_field" type="date" name = "income_date[]" class="form-control" value="{{user['incomes'][income]['date']}}"></input>
+                </div>
+                {% if loop.index == 1 and user["incomes"]|length != 0 %}
+                
+                <div class="py-4 ps-1 col-md-1">
+                    <button class="btn btn-success"id="add_income_btn"><span>Add</span></button>
+                </div>
+
+                {% else %}
+                <div class="py-4 ps-1 col-md-1">
+                    <button class="btn btn-outline-danger"id="remove_item_btn"><span>Remove</span></button>
+                </div>
+
+                {% endif %}
+            </div>
+            {% endfor %}
             
         </div>
         <div class="col-md-6 text-center" id="expense_form">
@@ -158,7 +251,7 @@
                     <h3>Expenses</h3>
                 </div>
                 <div class="col-md-3 offset-md-1">
-                    <input  class="form-control" type="search" aria-label="Search" id="expenseSearch" onkeyup="searchExpense()" placeholder="Search for name">
+                    <input  class="form-control" type="search" aria-label="Search" id="expenseSearch" onkeyup="filterExpense()" placeholder="Search for name">
                 </div>
 
                 <div class="dropdown col-md-auto">
@@ -168,17 +261,17 @@
                   
                     <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
                         <li>
-                        <input type="checkbox" id="wireExpense" value="wire" onchange="searchExpense()">
+                        <input type="checkbox" id="wireExpense" value="wire" onchange="filterExpense()">
                         <label for="">Wire</label>
                         </li>
 
                         <li>
-                            <input type="checkbox" id="checkExpense" value="check" onchange="searchExpense()">
+                            <input type="checkbox" id="checkExpense" value="check" onchange="filterExpense()">
                             <label for="">Check</label>
                         </li>
 
                         <li>
-                            <input type="checkbox" id="cashExpense" value="cash" onchange="searchExpense()">
+                            <input type="checkbox" id="cashExpense" value="cash" onchange="filterExpense()">
                             <label for="">Cash</label>
                         </li>
                       
@@ -186,15 +279,17 @@
                 </div>
             </div>
             <hr>
+
+            {% if user["expenses"]|length == 0 %}
             <div class="row justify-content-center expense_input_field">
                 <div class="form-group col-md-3 py-1">
                     <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="expense_name">
+                    <input name = "expense_name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="expense_name">
                 </div>
                 
                 <div class="form-group col-md-2 py-1">
                     <label for="inputState" class="fw-bold" >Type</label>
-                    <select id="inputState" name = "type[]" class="form-select expenseType">
+                    <select id="inputState" name = "expense_type[]" class="form-select expenseType">
                         <option value="Cash">Cash</option>
                         <option value="Check">Check</option>
                         <option selected value="Wire">Wire</option>
@@ -203,18 +298,80 @@
 
                 <div class="form-group col-md-2 py-1">
                     <label for="amount" class="fw-bold">$Amount</label>
-                    <input id="input_field" type="text" name="amount[]" class="form-control" value="100"></input>
+                    <input id="input_field" type="text" name="expense_amount[]" class="form-control" value="100"></input>
                 </div>
 
                 <div class="form-group col-md-auto py-1">
                     <label for="amount" class="fw-bold">Date</label>
-                    <input id="input_field" type="date" name = "date[]" class="form-control" value=100></input>
+                    <input id="input_field" type="date" name = "expense_date[]" class="form-control" value=""></input>
                 </div>
 
                 <div class="py-4 ps-1 col-md-1">
                     <button class="btn btn-danger"id="add_expense_btn"> <span>Add</span></button>
                 </div>
             </div>
+            {% endif %}
+
+            {% for expense in user["expenses"] %}
+            <div class="row justify-content-center expense_input_field">
+                <div class="form-group col-md-3 py-1">
+                    <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
+                    <input name = "expense_name[]" class="form-control" value="{{expense}}" id="expense_name">
+                </div>
+                
+                <div class="form-group col-md-2 py-1">
+                    <label for="inputState" class="fw-bold" >Type</label>
+                    <select id="inputState" name = "expense_type[]" value="{{user['expenses'][expense]['type']}}" class="form-select expenseType">
+
+                        {% if user['expenses'][expense]['type'] == "Cash" %}
+                        <option value="Cash" selected>Cash</option>
+                        <option value="Check">Check</option>
+                        <option value="Wire">Wire</option>
+                        {% elif user['expenses'][expense]['type'] == "Check"%}
+                        <option value="Cash">Cash</option>
+                        <option value="Check" selected>Check</option>
+                        <option value="Wire">Wire</option>
+                        {% else %}
+                        <option value="Cash">Cash</option>
+                        <option value="Check">Check</option>
+                        <option value="Wire" selected>Wire</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+                <div class="form-group col-md-2 py-1">
+                    <label for="amount" class="fw-bold">$Amount</label>
+                    <input id="input_field" type="text" name="expense_amount[]" class="form-control" value="{{user['expenses'][expense]['amt']}}"></input>
+                </div>
+
+                <div class="form-group col-md-auto py-1">
+                    <label for="amount" class="fw-bold">Date</label>
+                    <input id="input_field" type="date" name = "expense_date[]" class="form-control" value="{{user['expenses'][expense]['date']}}"></input>
+                </div>
+
+                {% if loop.index == 1 and user["expenses"]|length != 0 %}
+                
+                <div class="py-4 ps-1 col-md-1">
+                    <button class="btn btn-success"id="add_expense_btn"><span>Add</span></button>
+                </div>
+
+                {% else %}
+                <div class="py-4 ps-1 col-md-1">
+                    <button class="btn btn-outline-danger"id="remove_item_btn"><span>Remove</span></button>
+                </div>
+
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+
+        </div>
+        
+
+        
+        <div class="py-4 ps-1 text-center">
+            <button class="btn btn-success" onclick="updateIncomes()"> <span>Analyze</span></button>
         </div>
     </div>
 </div>
@@ -234,11 +391,11 @@
                 <div class="row justify-content-center  income_input_field">
                     <div class="form-group col-md-3 py-1">
                         <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                        <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="income_name">
+                        <input name = "income_name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="income_name">
                     </div>
                     <div class="form-group col-md-2 py-1">
                         <label for="inputState" class="fw-bold" >Type</label>
-                        <select id="inputState" name = "type[]" class="form-select incomeType">
+                        <select id="inputState" name = "income_type[]" class="form-select incomeType">
                             <option value="Cash">Cash</option>
                             <option value="Check">Check</option>
                             <option selected value="Wire">Wire</option>
@@ -246,16 +403,16 @@
                     </div>
                     <div class="form-group col-md-2 py-1">
                         <label for="amount" class="fw-bold">$Amount</label>
-                        <input id="input_field" type="number" name = "amount[]" class="form-control" value=100></input>
+                        <input id="input_field" type="number" name = "income_amount[]" class="form-control" value=100></input>
                     </div>
 
                     <div class="form-group col-md-auto py-1">
                         <label for="amount" class="fw-bold">Date</label>
-                        <input id="input_field" type="date" name = "date[]" class="form-control" value=100></input>
+                        <input id="input_field" type="date" name = "income_date[]" class="form-control" value=100></input>
                     </div>
                     
                     <div class="py-4 ps-1 col-md-1">
-                        <button class="btn btn-outline-success"id="remove_item_btn"><span>Remove</span></button>
+                        <button class="btn btn-outline-danger"id="remove_item_btn"><span>Remove</span></button>
                     </div>
                 </div> 
                 `
@@ -273,12 +430,12 @@
                 <div class="row justify-content-center expense_input_field">
                 <div class="form-group col-md-3 py-1">
                     <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                    <input name = "name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="expense_name">
+                    <input name = "expense_name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="expense_name">
                 </div>
                 
                 <div class="form-group col-md-2 py-1">
                     <label for="inputState" class="fw-bold" >Type</label>
-                    <select id="inputState" name = "type[]" class="form-select expenseType">
+                    <select id="inputState" name = "expense_type[]" class="form-select expenseType">
                         <option value="Cash">Cash</option>
                         <option value="Check">Check</option>
                         <option selected value="Wire">Wire</option>
@@ -287,12 +444,12 @@
 
                 <div class="form-group col-md-2 py-1">
                     <label for="amount" class="fw-bold">$Amount</label>
-                    <input id="input_field" type="number" name = "amount[]" class="form-control" value=100></input>
+                    <input id="input_field" type="number" name = "expense_amount[]" class="form-control" value=100></input>
                 </div>
 
                 <div class="form-group col-md-auto py-1">
                     <label for="amount" class="fw-bold">Date</label>
-                    <input id="input_field" type="date" name = "date[]" class="form-control" value=100></input>
+                    <input id="input_field" type="date" name = "expense_date[]" class="form-control" value=100></input>
                 </div>
 
                 <div class="py-4 ps-1 col-md-1">

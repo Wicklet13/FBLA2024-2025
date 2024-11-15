@@ -1,22 +1,6 @@
-{% extends 'base.html'%}
-
-{% block head %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
-
-{% endblock %}
 
 
-{% block body %}
-
-<div class="container-xxl ">
-    <div class="row py-3">
-        <div class="text-center offset-md-6 col-md-auto" style="width: 550px;"><canvas id="acquisitions"></canvas></div>
-    </div>
-    
-</div>
-
-<script>
-    (async function() {
+(async function() {
     
 
     const labels = [
@@ -28,7 +12,7 @@
         labels : labels,
         datasets : [{
             label: 'End of Month Balance',
-            data: {{ user['months'] }},
+            data: user['months'],
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -72,7 +56,7 @@
                     beginAtZero: true,
                     title: {
                     display: true,
-                    text: 'Balance In Thousands of Dollars'
+                    text: 'Balance In Dollars'
                     }
                 }
             
@@ -82,6 +66,3 @@
     }
     );
   })();
-</script>
-
-{% endblock %} 

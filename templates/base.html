@@ -46,7 +46,7 @@
                       creds: JSON.stringify(user) // data for server
                   },
                   success: function (response) {
-                    window.location.assign('/dashboard'); // on success route to calculator page
+                    window.location.assign('/'); // on success route to calculator page
                   },
                   error: function (response) {
                     console.log(response); 
@@ -123,7 +123,7 @@
           
           <ul class="navbar-nav">
 
-            
+            {% if user %}
             <li class="nav-item mx-3">
               <a href="/dashboard" class="nav-link h5"> Dashboard </a>
             </li>
@@ -133,7 +133,10 @@
             <li class="nav-item mx-3">
               <a href="/analyze" class="nav-link h5"> Analyze </a>
             </li>
+            {% endif %}
+
           </ul>
+
           
           
           <div class="mx-2 my-lg-0 ms-auto">
