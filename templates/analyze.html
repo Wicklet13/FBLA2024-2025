@@ -18,7 +18,8 @@
 <script>
     (async function() {
     
-
+    var incomeVbalance =  document.getElementById('acquisitions');
+    
     const labels = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
@@ -52,7 +53,7 @@
 
 
     new Chart(
-      document.getElementById('acquisitions'),
+        incomeVbalance,
       {
         type: 'line',
         
