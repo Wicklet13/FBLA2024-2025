@@ -141,9 +141,9 @@
                     <a class="btn btn-light dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                       <img src="{{url_for('static',filename='filter.png')}}" alt="filter" style="width:25px; height: 25px;">
                     </a>
-                  
+                    <!-- checks for changes in requested income 'type' filtering -->
                     <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
-                        <li>
+                        <li> 
                         <input type="checkbox" id="wireIncome" value="wire" onchange="filterIncome()">
                         <label for="">Wire</label>
                         </li>
@@ -163,7 +163,7 @@
 
             </div>
             <hr>
-
+            <!-- creating new incomes -->
             {% if user["incomes"]|length == 0 %}
             <div class="row justify-content-center income_input_field">
                 
@@ -196,6 +196,7 @@
             </div>
             {% endif %}
 
+            <!-- determines income types -->
             {% for income in user['incomes'] %}
             <div class="row justify-content-center  income_input_field">
                 <div class="form-group col-md-3 py-1">
@@ -258,7 +259,8 @@
                     <a class="btn btn-light dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                       <img src="{{url_for('static',filename='filter.png')}}" alt="filter" style="width:25px; height: 25px;">
                     </a>
-                  
+                  <!-- checks for changes in requested expense 'type' filtering -->
+
                     <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuLink">
                         <li>
                         <input type="checkbox" id="wireExpense" value="wire" onchange="filterExpense()">
@@ -280,6 +282,7 @@
             </div>
             <hr>
 
+            <!-- creating new expenses -->
             {% if user["expenses"]|length == 0 %}
             <div class="row justify-content-center expense_input_field">
                 <div class="form-group col-md-3 py-1">
@@ -311,7 +314,7 @@
                 </div>
             </div>
             {% endif %}
-
+            <!-- determines expense types -->
             {% for expense in user["expenses"] %}
             <div class="row justify-content-center expense_input_field">
                 <div class="form-group col-md-3 py-1">
@@ -369,7 +372,7 @@
         </div>
         
 
-        
+        <!-- updates displayed balance and redirects to Analyze -->
         <div class="py-4 ps-1 text-center">
             <button class="btn btn-success" onclick="updateIncomes()"> <span>Analyze</span></button>
         </div>
@@ -381,7 +384,7 @@
 <script>
     $(document).ready(function(webpage){
 
-        
+        //adding an income transaction form
         $("#add_income_btn").click(function(addNewIncome){
 
             addNewIncome.preventDefault();
@@ -420,7 +423,7 @@
 
         })
 
-        //adding an expense line
+        //adding an expense transaction form
         $("#add_expense_btn").click(function(addNewExpense){
 
             addNewExpense.preventDefault();

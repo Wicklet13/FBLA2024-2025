@@ -92,14 +92,13 @@ def update_expense_transactions():
         if expense_date[i] == "":
             expense_date[i]=datetime.datetime.today().strftime("%Y-%m-%d")
 
-    print(expense_date)
     expenses = {} # dictionary to store classes
 
     for i in range(len(expense_names)):
         name = expense_names[i]
         expenses[name] = [name, expense_types[i], expense_amounts[i], expense_date[i]]
 
-
+    #updates session information
     update_expenses(session.get("email"), expenses)
     update_balance(session.get("email"))
 
