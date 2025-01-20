@@ -1,5 +1,7 @@
 {% extends 'base.html'%}
 
+{% block title %}Analyze{% endblock %}
+
 {% block head %}
 <script>
     function filterIncome() {
@@ -128,7 +130,10 @@
     <div class="row py-3">
         <div class="col-md-6 text-center" id="income_form">
             <div class="row justify-content-start">
-                <div class="col-md-3 offset-md-3">
+                <div class="col-md-1 offset-md-1">
+                    <button class="btn btn-success"id="add_income_btn"><span>Add</span></button>
+                </div>
+                <div class="col-md-3 offset-md-1">
                     <h3>Income</h3>
                 </div>
                 
@@ -164,37 +169,6 @@
             </div>
             <hr>
             <!-- creating new incomes -->
-            {% if user["incomes"]|length == 0 %}
-            <div class="row justify-content-center income_input_field">
-                
-                <div class="form-group col-md-3 py-1">
-                    <label for="Transaction_Name" class="fw-bold" >Transaction Name</label> 
-                    <input name = "income_name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="income_name">
-
-                </div>
-                <div class="form-group col-md-2 py-1">
-                    <label for="inputState" class="fw-bold" >Type</label>
-                    <select id="inputState" name = "income_type[]" class="form-select incomeType">
-                        <option value="Cash">Cash</option>
-                        <option value="Check">Check</option>
-                        <option selected value="Wire">Wire</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-2 py-1">
-                    <label for="amount" class="fw-bold">$Amount</label>
-                    <input id="input_field" type="number" name = "income_amount[]" class="form-control" value=100></input>
-                </div>
-
-                <div class="form-group col-md-auto py-1">
-                    <label for="amount" class="fw-bold">Date</label>
-                    <input id="input_field" type="date" name = "income_date[]" class="form-control" value=""></input>
-                </div>
-                
-                <div class="py-4 ps-1 col-md-1">
-                    <button class="btn btn-success"id="add_income_btn"><span>Add</span></button>
-                </div>
-            </div>
-            {% endif %}
 
             <!-- determines income types -->
             {% for income in user['incomes'] %}
@@ -230,25 +204,20 @@
                     <label for="amount" class="fw-bold">Date</label>
                     <input id="input_field" type="date" name = "income_date[]" class="form-control" value="{{user['incomes'][income]['date']}}"></input>
                 </div>
-                {% if loop.index == 1 and user["incomes"]|length != 0 %}
-                
-                <div class="py-4 ps-1 col-md-1">
-                    <button class="btn btn-success"id="add_income_btn"><span>Add</span></button>
-                </div>
-
-                {% else %}
                 <div class="py-4 ps-1 col-md-1">
                     <button class="btn btn-outline-danger"id="remove_item_btn"><span>Remove</span></button>
                 </div>
 
-                {% endif %}
             </div>
             {% endfor %}
             
         </div>
         <div class="col-md-6 text-center" id="expense_form">
             <div class="row justify-content-start">
-                <div class="col-md-3 offset-md-3">
+                <div class="col-md-1 offset-md-1">
+                    <button class="btn btn-success"id="add_expense_btn"> <span>Add</span></button>
+                </div>
+                <div class="col-md-3 offset-md-1">
                     <h3>Expenses</h3>
                 </div>
                 <div class="col-md-3 offset-md-1">
@@ -283,37 +252,6 @@
             <hr>
 
             <!-- creating new expenses -->
-            {% if user["expenses"]|length == 0 %}
-            <div class="row justify-content-center expense_input_field">
-                <div class="form-group col-md-3 py-1">
-                    <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                    <input name = "expense_name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="expense_name">
-                </div>
-                
-                <div class="form-group col-md-2 py-1">
-                    <label for="inputState" class="fw-bold" >Type</label>
-                    <select id="inputState" name = "expense_type[]" class="form-select expenseType">
-                        <option value="Cash">Cash</option>
-                        <option value="Check">Check</option>
-                        <option selected value="Wire">Wire</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-md-2 py-1">
-                    <label for="amount" class="fw-bold">$Amount</label>
-                    <input id="input_field" type="text" name="expense_amount[]" class="form-control" value="100"></input>
-                </div>
-
-                <div class="form-group col-md-auto py-1">
-                    <label for="amount" class="fw-bold">Date</label>
-                    <input id="input_field" type="date" name = "expense_date[]" class="form-control" value=""></input>
-                </div>
-
-                <div class="py-4 ps-1 col-md-1">
-                    <button class="btn btn-danger"id="add_expense_btn"> <span>Add</span></button>
-                </div>
-            </div>
-            {% endif %}
             <!-- determines expense types -->
             {% for expense in user["expenses"] %}
             <div class="row justify-content-center expense_input_field">
@@ -353,18 +291,10 @@
                     <input id="input_field" type="date" name = "expense_date[]" class="form-control" value="{{user['expenses'][expense]['date']}}"></input>
                 </div>
 
-                {% if loop.index == 1 and user["expenses"]|length != 0 %}
-                
-                <div class="py-4 ps-1 col-md-1">
-                    <button class="btn btn-success"id="add_expense_btn"><span>Add</span></button>
-                </div>
-
-                {% else %}
                 <div class="py-4 ps-1 col-md-1">
                     <button class="btn btn-outline-danger"id="remove_item_btn"><span>Remove</span></button>
                 </div>
 
-                {% endif %}
             </div>
             {% endfor %}
             
@@ -394,7 +324,7 @@
                 <div class="row justify-content-center  income_input_field">
                     <div class="form-group col-md-3 py-1">
                         <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                        <input name = "income_name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="income_name">
+                        <input name = "income_name[]" class="form-control" value="" placeholder="paycheck , cash" id="income_name">
                     </div>
                     <div class="form-group col-md-2 py-1">
                         <label for="inputState" class="fw-bold" >Type</label>
@@ -433,7 +363,7 @@
                 <div class="row justify-content-center expense_input_field">
                 <div class="form-group col-md-3 py-1">
                     <label for="Transaction_Name" class="fw-bold" >Transaction Name</label>
-                    <input name = "expense_name[]" class="form-control" value="Null" placeholder="paycheck , cash" id="expense_name">
+                    <input name = "expense_name[]" class="form-control" value="" placeholder="paycheck , cash" id="expense_name">
                 </div>
                 
                 <div class="form-group col-md-2 py-1">

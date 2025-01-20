@@ -44,6 +44,11 @@ def dashboard():
 def analyze():
     return render_template("analyze.html", user=session.get("user"))
 
+@app.route('/chatbot')
+@logged_in_required
+def chatbot():
+    return render_template("chatbot.html", user=session.get("user"))
+
 @app.route('/update_income_transactions', methods=["POST"])
 def update_income_transactions():
     # get all class names, types, and numerical grades
